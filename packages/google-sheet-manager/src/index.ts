@@ -1,7 +1,7 @@
 import { GoogleAuth, GoogleAuthOptions } from "google-auth-library";
 import { google, sheets_v4 } from "googleapis";
 
-class SheetManager {
+export default class SheetManager {
     private auth: GoogleAuth;
     private sheetId: string;
 
@@ -21,7 +21,7 @@ class SheetManager {
         }}`;
     }
 
-    getChildSheetId = async (sheetName: string) => {
+    async getChildSheetId(sheetName: string) {
         const sheets = this.getSheets();
         const res = await sheets.spreadsheets.get({
             spreadsheetId: this.sheetId,
@@ -33,19 +33,19 @@ class SheetManager {
         );
         if (!sheet || !sheet.properties) throw new Error("No sheet found");
         return sheet.properties.sheetId;
-    };
+    }
 
-    getSheetUrl = async (sheetName: string) => {
+    async getSheetUrl(sheetName: string) {
         const sheetId = await this.getChildSheetId(sheetName);
         if (!sheetId) throw new Error("No sheet found");
         const sheetUrl = this.getSpreadSheetUrl(sheetId.toString());
         return sheetUrl;
-    };
+    }
 
-    private checkIfSheetExists = async (
+    private async checkIfSheetExists(
         sheets: sheets_v4.Sheets,
         sheetName: string
-    ) => {
+    ) {
         const res = await sheets.spreadsheets.get({
             spreadsheetId: this.sheetId,
         });
@@ -58,7 +58,7 @@ class SheetManager {
         if (!sheetExists) {
             await this.createSheet(sheetName);
         }
-    };
+    }
 
     async createSheet(sheetName: string) {
         const sheets = await this.getSheets();
@@ -73,22 +73,22 @@ class SheetManager {
         });
     }
 
-    readFromSheet = async (sheetName: string) => {
+    async readFromSheet(sheetName: string, range: string = "A2:Z1000") {
         const sheets = await this.getSheets();
         await this.checkIfSheetExists(sheets, sheetName);
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId: this.sheetId,
-            range: `${sheetName}!A2:Z1000`,
+            range: `${sheetName}!${range}`,
         });
-        return response;
-    };
+        return response.data.values;
+    }
 
-    writeToSheetWithCustomRange = async (
+    async writeToSheetWithCustomRange(
         sheetName: string,
         values: [],
         range: string,
         checkIfSheetExists: boolean = true
-    ) => {
+    ) {
         try {
             if (!range || range.indexOf(":") === -1)
                 throw new Error("Invalid range");
@@ -116,7 +116,5 @@ class SheetManager {
         } catch (e) {
             console.log(e);
         }
-    };
+    }
 }
-
-export default SheetManager;

@@ -4,6 +4,7 @@
     "description": "",
     "private": true,
     "main": "dist/index.js",
+    "types": "./dist/index.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "tsc"
@@ -11,10 +12,10 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "googleapis": "^129.0.0",
-        "ts-node": "^10.9.2"
+        "googleapis": "^129.0.0"
     },
     "devDependencies": {
+        "ts-node": "^10.9.2",
         "typescript": "^5.3.3"
     }
 }
