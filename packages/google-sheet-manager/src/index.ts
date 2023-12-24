@@ -1,7 +1,7 @@
 import { GoogleAuth, GoogleAuthOptions } from "google-auth-library";
 import { google, sheets_v4 } from "googleapis";
 
-export default class SheetManager {
+export class SheetManager {
     private auth: GoogleAuth;
     private sheetId: string;
 
@@ -64,9 +64,6 @@ export default class SheetManager {
         const sheets = await this.getSheets();
         await sheets.spreadsheets.batchUpdate({
             spreadsheetId: this.sheetId,
-            // resource: {
-            //     requests: [{ addSheet: { properties: { title: sheetName } } }],
-            // },
             requestBody: {
                 requests: [{ addSheet: { properties: { title: sheetName } } }],
             },
@@ -74,7 +71,7 @@ export default class SheetManager {
     }
 
     async readFromSheet(sheetName: string, range: string = "A2:Z1000") {
-        const sheets = await this.getSheets();
+        const sheets = this.getSheets();
         await this.checkIfSheetExists(sheets, sheetName);
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId: this.sheetId,
@@ -95,15 +92,6 @@ export default class SheetManager {
             const sheets = await this.getSheets();
             if (checkIfSheetExists)
                 await this.checkIfSheetExists(sheets, sheetName);
-            // sheets.spreadsheets.values.append({
-            //     spreadsheetId: this.sheetId,
-            //     range: `${sheetName}!${range}`,
-            //     valueInputOption: "USER_ENTERED",
-            //     insertDataOption: "INSERT_ROWS",
-            //     resource: {
-            //         values: [values],
-            //     },
-            // });
             sheets.spreadsheets.values.append({
                 spreadsheetId: this.sheetId,
                 range: `${sheetName}!${range}`,
