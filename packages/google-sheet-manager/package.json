@@ -1,15 +1,14 @@
 {
     "name": "google-sheet-manager",
-    "version": "0.1.0",
-    "description": "",
+    "version": "0.1.1",
+    "description": "Package that lets you simply use a Google Sheet to read and write content.",
     "private": false,
     "main": "dist/index.js",
     "types": "./dist/index.d.ts",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
         "build": "tsc"
     },
-    "author": "",
+    "author": "jsaleix",
     "license": "ISC",
     "dependencies": {
         "googleapis": "^129.0.0"
