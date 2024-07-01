@@ -58,15 +58,15 @@ Returns an array of string arrays
 
 NodeJS project with the following structure:
 
-![plot](https://github.com/jsaleix/google-sheet-manager/raw/master/packages/google-sheet-manager/documentation/screenshots/structure.png?raw=true)
+![structure](https://images2.imgbox.com/11/34/cqerntfm_o.png)
 
-./config/index.js
-![plot](https://github.com/jsaleix/google-sheet-manager/raw/master/packages/google-sheet-manager/documentation/screenshots/config.pn?raw=trueg)
+```./config/index.js```
+![config](https://images2.imgbox.com/53/9b/4pj6UpHx_o.png)
 
-./lib/sheet.js
-![plot](https://github.com/jsaleix/google-sheet-manager/raw/master/packages/google-sheet-manager/documentation/screenshots/lib_sheet.png?raw=true)
+```./lib/sheet.js```
+![lib_sheet](https://images2.imgbox.com/5e/9c/9iG2VSW7_o.png)
 
-./index.js
-![plot](https://github.com/jsaleix/google-sheet-manager/raw/master/packages/google-sheet-manager/documentation/screenshots/index.png?raw=true)
+```./index.js```
+![index](https://images2.imgbox.com/b1/24/EqxSsvOB_o.png)
 
 It's a basic usage and of course the sheet name can be dynamic, so you can use others with the same instance of SheetManager.
