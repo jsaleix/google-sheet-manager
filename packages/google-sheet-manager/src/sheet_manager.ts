@@ -82,7 +82,7 @@ export class SheetManager {
 
     async writeToSheetWithCustomRange(
         sheetName: string,
-        values: Array<any>,
+        values: any[],
         range: string,
         checkIfSheetExists: boolean = true
     ) {
