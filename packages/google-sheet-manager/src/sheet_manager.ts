@@ -22,17 +22,23 @@ export class SheetManager {
     }
 
     async getChildSheetId(sheetName: string) {
-        const sheets = this.getSheets();
-        const res = await sheets.spreadsheets.get({
-            spreadsheetId: this.sheetId,
-        });
-        if (!res.data.sheets) throw new Error("SpreadsheetId not found");
-        const sheet = res.data.sheets.find(
-            (sheet: sheets_v4.Schema$Sheet) =>
-                sheet?.properties?.title === sheetName
-        );
-        if (!sheet || !sheet.properties) throw new Error("No sheet found");
-        return sheet.properties.sheetId;
+        try {
+            const sheets = this.getSheets();
+            const res = await sheets.spreadsheets.get({
+                spreadsheetId: this.sheetId,
+            });
+            if (!res.data.sheets) throw new Error("SpreadsheetId not found");
+            const sheet = res.data.sheets.find(
+                (sheet: sheets_v4.Schema$Sheet) =>
+                    sheet?.properties?.title === sheetName
+            );
+            if (!sheet || !sheet.properties || !sheet.properties.sheetId)
+                throw new Error("No sheet found");
+            return sheet.properties.sheetId;
+        } catch (e: any) {
+            console.log(e);
+            return null;
+        }
     }
 
     async getSheetUrl(sheetName: string) {
@@ -71,13 +77,19 @@ export class SheetManager {
     }
 
     async readFromSheet(sheetName: string, range: string = "A2:Z1000") {
-        const sheets = this.getSheets();
-        await this.checkIfSheetExists(sheets, sheetName);
-        const response = await sheets.spreadsheets.values.get({
-            spreadsheetId: this.sheetId,
-            range: `${sheetName}!${range}`,
-        });
-        return response.data.values;
+        try {
+            const sheets = this.getSheets();
+            await this.checkIfSheetExists(sheets, sheetName);
+            const response = await sheets.spreadsheets.values.get({
+                spreadsheetId: this.sheetId,
+                range: `${sheetName}!${range}`,
+            });
+            if(!response.data.values) throw new Error("No data found");
+            return response.data.values;
+        } catch (e: any) {
+            console.log(e);
+            return null;
+        }
     }
 
     async writeToSheetWithCustomRange(
@@ -101,8 +113,10 @@ export class SheetManager {
                     values: [values],
                 },
             });
+            return true;
         } catch (e) {
             console.log(e);
+            return false;
         }
     }
 }
