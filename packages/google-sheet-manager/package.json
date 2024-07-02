@@ -1,6 +1,6 @@
 {
     "name": "google-sheet-manager",
-    "version": "0.1.7",
+    "version": "0.2.0",
     "description": "Package that lets you simply use a Google Sheet to read and write content.",
     "private": false,
     "main": "dist/index.js",
