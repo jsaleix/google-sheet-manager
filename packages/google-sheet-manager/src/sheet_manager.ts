@@ -84,7 +84,7 @@ export class SheetManager {
                 spreadsheetId: this.sheetId,
                 range: `${sheetName}!${range}`,
             });
-            if(!response.data.values) throw new Error("No data found");
+            if (!response.data.values) throw new Error("No data found");
             return response.data.values;
         } catch (e: any) {
             console.log(e);
@@ -115,6 +115,26 @@ export class SheetManager {
             });
             return true;
         } catch (e) {
+            console.log(e);
+            return false;
+        }
+    }
+
+    async updateRowInSheet(sheetName: string, values: any[], range?: string) {
+        try {
+            const sheets = this.getSheets();
+            await this.checkIfSheetExists(sheets, sheetName);
+            // If no range is provided, it appends the row
+            sheets.spreadsheets.values.update({
+                spreadsheetId: this.sheetId,
+                range: range ? `${sheetName}!${range}` : undefined,
+                valueInputOption: "USER_ENTERED",
+                requestBody: {
+                    values: [values],
+                },
+            });
+            return true;
+        } catch (e: any) {
             console.log(e);
             return false;
         }
